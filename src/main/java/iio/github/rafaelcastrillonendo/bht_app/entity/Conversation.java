@@ -59,9 +59,6 @@ public class Conversation {
         return createdAt;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -75,8 +72,5 @@ public class Conversation {
         this.admin = admin;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
 
 }

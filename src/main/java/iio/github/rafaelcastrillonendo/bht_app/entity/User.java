@@ -32,7 +32,7 @@ public class User {
     @Column(name = "last_seen")
     private Instant lastSeen;
 
-    @CreationTimestamp 
+    @CreationTimestamp
     @Column(name = "created_at")
     private Instant createdAt;
 
@@ -69,10 +69,6 @@ public class User {
         return createdAt;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -81,16 +77,12 @@ public class User {
         this.nickname = nickname;
     }
 
-    public void setPassword_hash(String password_hash) {
+    public void setPasswordHash(String password_hash) {
         this.passwordHash = password_hash;
     }
 
-    public void setLast_seen(Instant last_seen) {
+    public void setLastSeen(Instant last_seen) {
         this.lastSeen = last_seen;
-    }
-
-    public void setCreated_at(Instant created_at) {
-        this.createdAt = created_at;
     }
 
 }
