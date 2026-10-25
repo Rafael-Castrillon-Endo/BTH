@@ -57,15 +57,15 @@ public class User {
         return nickname;
     }
 
-    public String getPassword_hash() {
+    public String getPasswordHash() {
         return passwordHash;
     }
 
-    public Instant getLast_seen() {
+    public Instant getLastSeen() {
         return lastSeen;
     }
 
-    public Instant getCreated_at() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
