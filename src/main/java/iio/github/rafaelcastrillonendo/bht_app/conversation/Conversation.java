@@ -39,8 +39,8 @@ public class Conversation {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "last_message_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_message_id")
     private Message lastMessage;
 
     public Conversation() {
