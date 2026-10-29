@@ -1,10 +1,12 @@
-package iio.github.rafaelcastrillonendo.bht_app.entity;
+package iio.github.rafaelcastrillonendo.bht_app.invitation;
 
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import iio.github.rafaelcastrillonendo.bht_app.conversation.Conversation;
 import iio.github.rafaelcastrillonendo.bht_app.enums.InvitationStatus;
+import iio.github.rafaelcastrillonendo.bht_app.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

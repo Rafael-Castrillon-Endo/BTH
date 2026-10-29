@@ -1,5 +1,8 @@
 package iio.github.rafaelcastrillonendo.bht_app.conversationM;
 
-public class ConversationMRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ConversationMRepository extends JpaRepository<ConversationMember, Long> {
+
     
-}
+} 

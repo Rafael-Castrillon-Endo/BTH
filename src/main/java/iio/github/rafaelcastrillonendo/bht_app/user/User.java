@@ -1,4 +1,4 @@
-package iio.github.rafaelcastrillonendo.bht_app.entity;
+package iio.github.rafaelcastrillonendo.bht_app.user;
 
 import java.time.Instant;
 

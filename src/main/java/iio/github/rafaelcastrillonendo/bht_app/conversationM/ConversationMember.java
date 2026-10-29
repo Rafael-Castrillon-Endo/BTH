@@ -1,9 +1,11 @@
-package iio.github.rafaelcastrillonendo.bht_app.entity;
+package iio.github.rafaelcastrillonendo.bht_app.conversationM;
 
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import iio.github.rafaelcastrillonendo.bht_app.conversation.Conversation;
+import iio.github.rafaelcastrillonendo.bht_app.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,10 +15,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "messages")
-public class Message {
+@Table(name = "conversation_members", uniqueConstraints = @UniqueConstraint(columnNames = { "conversation_id",
+        "user_id" }))
+
+public class ConversationMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,20 +35,20 @@ public class Message {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
-    private String content;
-
     @CreationTimestamp
-    @Column(name = "sent_at", nullable = false, updatable = false)
-    private Instant sentAt;
+    @Column(name = "joined_at", updatable = false)
+    private Instant joinedAt;
 
-    public Message() {
+    public ConversationMember() {
     }
 
-    public Message(Conversation conversation, User user, String content) {
+    public ConversationMember(Conversation conversation, User user) {
         this.conversation = conversation;
         this.user = user;
-        this.content = content;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Conversation getConversation() {
@@ -54,14 +59,6 @@ public class Message {
         this.conversation = conversation;
     }
 
-    public Long getId(){
-        return id;
-    }
-
-    public Instant getSentAt(){
-        return sentAt;
-    }
-
     public User getUser() {
         return user;
     }
@@ -70,12 +67,8 @@ public class Message {
         this.user = user;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public Instant getJoinedAt() {
+        return joinedAt;
     }
 
 }

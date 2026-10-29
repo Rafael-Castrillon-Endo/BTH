@@ -1,9 +1,11 @@
-package iio.github.rafaelcastrillonendo.bht_app.entity;
+package iio.github.rafaelcastrillonendo.bht_app.Message;
 
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import iio.github.rafaelcastrillonendo.bht_app.conversation.Conversation;
+import iio.github.rafaelcastrillonendo.bht_app.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,13 +15,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "conversation_members", uniqueConstraints = @UniqueConstraint(columnNames = { "conversation_id",
-        "user_id" }))
-
-public class ConversationMember {
+@Table(name = "messages")
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,20 +32,20 @@ public class ConversationMember {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @CreationTimestamp
-    @Column(name = "joined_at", updatable = false)
-    private Instant joinedAt;
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    private String content;
 
-    public ConversationMember() {
+    @CreationTimestamp
+    @Column(name = "sent_at", nullable = false, updatable = false)
+    private Instant sentAt;
+
+    public Message() {
     }
 
-    public ConversationMember(Conversation conversation, User user) {
+    public Message(Conversation conversation, User user, String content) {
         this.conversation = conversation;
         this.user = user;
-    }
-
-    public Long getId() {
-        return id;
+        this.content = content;
     }
 
     public Conversation getConversation() {
@@ -57,6 +56,14 @@ public class ConversationMember {
         this.conversation = conversation;
     }
 
+    public Long getId(){
+        return id;
+    }
+
+    public Instant getSentAt(){
+        return sentAt;
+    }
+
     public User getUser() {
         return user;
     }
@@ -65,8 +72,12 @@ public class ConversationMember {
         this.user = user;
     }
 
-    public Instant getJoinedAt() {
-        return joinedAt;
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }

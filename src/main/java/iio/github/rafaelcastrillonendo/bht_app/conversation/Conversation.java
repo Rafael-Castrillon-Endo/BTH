@@ -1,9 +1,11 @@
-package iio.github.rafaelcastrillonendo.bht_app.entity;
+package iio.github.rafaelcastrillonendo.bht_app.conversation;
 
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import iio.github.rafaelcastrillonendo.bht_app.Message.Message;
+import iio.github.rafaelcastrillonendo.bht_app.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +39,10 @@ public class Conversation {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @OneToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "last_message_id")
+    private Message lastMessage;
+
     public Conversation() {
     }
 
@@ -59,7 +66,6 @@ public class Conversation {
         return createdAt;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
@@ -71,6 +77,5 @@ public class Conversation {
     public void setAdmin(User admin) {
         this.admin = admin;
     }
-
 
 }
