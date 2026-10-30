@@ -3,6 +3,7 @@ package iio.github.rafaelcastrillonendo.bht_app.conversation;
 import java.util.List;
 import java.util.Optional;
 
+import iio.github.rafaelcastrillonendo.bht_app.conversation.dto.ConversationSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,14 +11,18 @@ import org.springframework.data.repository.query.Param;
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
         @Query("""
-                        SELECT c FROM Conversation c
-                        JOIN ConversationMember cm ON cm.conversation = c
+                        SELECT new iio.github.rafaelcastrillonendo.bht_app.conversation.dto.ConversationSummary(
+                        c.id, c.isGroup, c.name, ou.username, ms.content, ms.sentAt, su.username                       
+                        ) FROM Conversation  c
+                        JOIN ConversationMember cm ON cm.conversation = c AND cm.user.id = :userId
+                        LEFT JOIN ConversationMember om ON om.conversation = c AND om.user.id != :userId AND c.isGroup = FALSE
+                        LEFT JOIN User ou ON ou.id = om.user.id
                         LEFT JOIN Message ms ON ms = c.lastMessage
-                        WHERE cm.user.id = :userId
-                        ORDER BY ms.createdAt DESC
-                        NULLS LAST
+                        LEFT JOIN User su ON su = ms.user
+                        ORDER BY ms.sentAt DESC
+                        NULLS LAST 
                         """)
-        List<Conversation> findAllByUserId(@Param("userId") Long userId);
+        List<ConversationSummary> findAllByUserId(@Param("userId") Long userId);
 
         @Query("""
                         SELECT c FROM Conversation c
@@ -25,7 +30,7 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
                         LEFT JOIN Message ms ON ms = c.lastMessage
                         WHERE cm.user.id = :userId AND
                         LOWER(c.name) LIKE LOWER(CONCAT('%', :conversationName, '%'))
-                        ORDER BY ms.createdAt DESC
+                        ORDER BY ms.sentAt DESC
                         NULLS LAST
                         """)
         List<Conversation> findConversationsByName(@Param("conversationName") String conversationName,
