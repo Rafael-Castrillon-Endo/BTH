@@ -2,7 +2,6 @@ package iio.github.rafaelcastrillonendo.bht_app.conversationM;
 
 import java.util.List;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import iio.github.rafaelcastrillonendo.bht_app.conversationM.dto.MemberSummary;
 
-public interface ConversationMRepository extends JpaRepository<ConversationMember, Long> {
+public interface ConversationMemberRepository extends JpaRepository<ConversationMember, Long> {
 
     boolean existsByUserIdAndConversationId(Long userId, Long conversationId);
 
@@ -34,11 +33,20 @@ public interface ConversationMRepository extends JpaRepository<ConversationMembe
     @Query("""
                 DELETE FROM ConversationMember cm
                 WHERE cm.user.id = :userId AND cm.conversation.id = :conversationId AND
-                cm.conversation.id = (SELECT c.id FROM Conversation c WHERE c.id = :conversationId AND c.admin.id = :adminId)
+                cm.conversation.id = (SELECT c.id FROM Conversation c WHERE c.id = :conversationId AND c.admin.id = :adminId AND c.isGroup = TRUE)
         """)
     int removeMemberFromAConversation(@Param("conversationId") Long conversationId,
                                         @Param("userId") Long userId , @Param("adminId") Long adminId);
 
+    @Modifying(clearAutomatically = true)
+    @Query("""
+            DELETE FROM ConversationMember cm
+            WHERE cm.conversation.id = :conversationId AND cm.user.id = :userId
+    """)
+    int leaveConversation(@Param("conversationId") Long conversationId, @Param("userId") Long userId);
+
+
+    
 
 
 

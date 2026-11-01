@@ -10,13 +10,16 @@ import org.springframework.data.repository.query.Param;
 
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
+
+
+        //c.id, c.isGroup, c.name, ou.username, ms.content, ms.sentAt, su.username
         @Query("""
                         SELECT new iio.github.rafaelcastrillonendo.bht_app.conversation.dto.ConversationSummary(
-                        c.id, c.isGroup, c.name, ou.username, ms.content, ms.sentAt, su.username                       
-                        ) FROM Conversation  c
+                        c.id, c.isGroup, c.name, ou.username, ms.content, ms.sentAt, su.username                      
+                        ) FROM Conversation c
                         JOIN ConversationMember cm ON cm.conversation = c AND cm.user.id = :userId
-                        LEFT JOIN ConversationMember om ON om.conversation = c AND om.user.id != :userId AND c.isGroup = FALSE
-                        LEFT JOIN User ou ON ou.id = om.user.id
+                        LEFT JOIN ConversationMember ocm ON ocm.conversation = c AND ocm.user.id <> :userId AND c.isGroup = FALSE
+                        LEFT JOIN User ou ON ou.id = ocm.user.id  
                         LEFT JOIN Message ms ON ms = c.lastMessage
                         LEFT JOIN User su ON su = ms.user
                         ORDER BY ms.sentAt DESC
