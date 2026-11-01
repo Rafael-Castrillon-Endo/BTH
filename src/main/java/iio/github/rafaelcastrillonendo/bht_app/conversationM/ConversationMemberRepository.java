@@ -12,8 +12,6 @@ import iio.github.rafaelcastrillonendo.bht_app.conversationM.dto.MemberSummary;
 
 public interface ConversationMemberRepository extends JpaRepository<ConversationMember, Long> {
 
-    boolean existsByUserIdAndConversationId(Long userId, Long conversationId);
-
     @Query("""
             SELECT COUNT(cm) FROM ConversationMember cm
             WHERE cm.conversation.id = :groupId
@@ -36,7 +34,7 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
                 WHERE cm.user.id = :userId AND cm.conversation.id = :conversationId AND
                 cm.conversation.id = (SELECT c.id FROM Conversation c WHERE c.id = :conversationId AND c.admin.id = :adminId AND c.isGroup = TRUE)
         """)
-    int removeMemberFromAConversation(@Param("conversationId") Long conversationId,
+    int deleteMembership(@Param("conversationId") Long conversationId,
                                         @Param("userId") Long userId , @Param("adminId") Long adminId);
 
     @Modifying(clearAutomatically = true)
@@ -54,6 +52,12 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
         LIMIT 1
     """)
     Optional<Long> findOldestNonAdminMemberId(@Param("conversationId") Long conversationId);
+
+    @Query("""
+        SELECT cm.user.id FROM ConversationMember cm
+        WHERE  cm.conversation.id = :conversationId
+    """)
+    List<Long> findMemberUserIds(@Param("conversationId") Long conversationId);
 
 
 }
