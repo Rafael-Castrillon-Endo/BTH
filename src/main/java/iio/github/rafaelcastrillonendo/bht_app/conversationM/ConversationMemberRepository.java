@@ -1,6 +1,7 @@
 package iio.github.rafaelcastrillonendo.bht_app.conversationM;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -45,11 +46,14 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
     """)
     int leaveConversation(@Param("conversationId") Long conversationId, @Param("userId") Long userId);
 
-
-    
-
-
-
+    @Query("""
+        SELECT cm.user.id FROM ConversationMember cm
+        JOIN Conversation c ON c = cm.conversation AND c.admin.id <> cm.user.id
+        WHERE cm.conversation.id = :conversationId
+        ORDER BY cm.joinedAt ASC
+        LIMIT 1
+    """)
+    Optional<Long> findOldestNonAdminMemberId(@Param("conversationId") Long conversationId);
 
 
 }
