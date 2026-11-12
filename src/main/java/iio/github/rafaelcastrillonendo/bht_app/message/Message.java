@@ -1,4 +1,4 @@
-package iio.github.rafaelcastrillonendo.bht_app.Message;
+package iio.github.rafaelcastrillonendo.bht_app.message;
 
 import java.time.Instant;
 
