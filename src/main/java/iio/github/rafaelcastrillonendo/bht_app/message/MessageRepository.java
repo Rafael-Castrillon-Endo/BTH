@@ -53,6 +53,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     """)
     Optional<Message> findLastMessageExcluding(@Param("conversationId") Long conversationId, @Param("excludedId") Long excludedId);
 
-    
+
 
 }

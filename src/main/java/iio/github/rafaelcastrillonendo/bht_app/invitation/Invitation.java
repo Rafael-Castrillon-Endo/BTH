@@ -107,4 +107,8 @@ public class Invitation {
         this.respondedAt = respondedAt;
     }
 
+    public Instant getCreatedAt(){
+        return this.createdAt;
+    }
+
 }
