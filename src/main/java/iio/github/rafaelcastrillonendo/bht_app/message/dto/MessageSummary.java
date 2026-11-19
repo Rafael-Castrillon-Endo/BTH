@@ -9,4 +9,5 @@ public record MessageSummary(
         Instant sentAt,
         String content
 ){
+
 }
