@@ -2,6 +2,7 @@ package iio.github.rafaelcastrillonendo.bht_app.invitation;
 
 import iio.github.rafaelcastrillonendo.bht_app.enums.InvitationStatus;
 import iio.github.rafaelcastrillonendo.bht_app.invitation.dto.InvitationSummary;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,10 +32,11 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     """)
     int respond(@Param("invitationId") Long invitationId, @Param("invitedUserId") Long invitedUserId, @Param("status") InvitationStatus status);
 
+
     @Modifying(clearAutomatically = true)
     @Query("""
         DELETE FROM Invitation i
-        WHERE i.status = 'PENDING' AND i.id = :invitationId AND i.inviterUser = :inviterId
+        WHERE i.status = 'PENDING' AND i.id = :invitationId AND i.inviterUser.id = :inviterId
     """)
     int cancelPending(@Param("invitationId") Long invitationId, @Param("inviterId") Long inviterId);
 

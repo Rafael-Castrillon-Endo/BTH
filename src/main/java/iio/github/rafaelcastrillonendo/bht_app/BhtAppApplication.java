@@ -8,6 +8,8 @@ public class BhtAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BhtAppApplication.class, args);
+
+
 	}
 
 }

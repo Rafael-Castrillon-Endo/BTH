@@ -47,6 +47,12 @@ public class Conversation {
     public Conversation() {
     }
 
+    public Conversation(String name, boolean isGroup, User admin) {
+        this.name = name;
+        this.isGroup = isGroup;
+        this.admin = admin;
+    }
+
     public Long getId() {
         return id;
     }
